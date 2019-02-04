@@ -28,12 +28,12 @@ class Cell: NSObject {
     func initWithPosition(xPos:Int,yPos:Int) {
         _x = xPos
         _y = yPos
-        strokeLength = bd * speed + 0.001
+        strokeLength = 37.001
         toX = _x + (Int)(strokeLength * cos(currentAngle))
         toY = _y + (Int)(strokeLength * sin(currentAngle))
         pos = CGPoint(x: _x, y: _y)
         
-        let cpos = yPos % 10
+        let cpos = (yPos + xPos) % 10
         switch cpos {
         case 0:
             colour = .white
@@ -72,29 +72,25 @@ class Cell: NSObject {
     
     func sense(x:Int,y:Int,px:Int,py:Int) {
         if previousX != x || previousY != y {
-        speed = speed + sp * (det(x1: _x, y1: _y, x2: previousX, y2: previousY, x3: x, y3: y) / (distance(x1: _x, y1: _y, x2: x, y2: y) + 1 ))
+            speed = speed + sp * (det(_x,_y,previousX,previousY,x,y) / (distance(_x,_y,x,y) + 1 ))
             previousX = x
             previousY = y
         }
-        
         speed = speed * speedLimiter
         currentAngle = currentAngle + speed
         strokeLength = bd * speed + 1
         toX = _x + Int(strokeLength * cos(currentAngle)) + 1
         toY = _y + Int(strokeLength * sin(currentAngle)) + 1
-        
     }
    
-    func det(x1:Int,y1:Int,x2:Int,y2:Int,x3:Int,y3:Int) -> Float {
+    var det = { (x1:Int,y1:Int,x2:Int,y2:Int,x3:Int,y3:Int) -> Float in
         return (Float) ((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1))
     }
- 
-    func distance(x1:Int,y1:Int,x2:Int,y2:Int) -> Float {
+    
+    var distance = { (x1:Int,x2:Int,y1:Int,y2:Int) -> Float in
         let s1 = Float(x2-x1)
-        let s2 = Float(x2-x1)
-        let s3 = Float(y2-y1)
-        let s4 = Float(y2-y1)
-        return sqrtf( s1 * s2 + s3 * s4)
+        let s2 = Float(y2-y1)
+        return sqrtf((s1 * s1) + (s2 * s2))
     }
     
 }

@@ -81,7 +81,6 @@ class strokeView: UIView {
             aPath.move(to: c.pos)
             aPath.addLine(to: CGPoint(x: c.toX, y: c.toY))
             aPath.close()
-            UIColor.white.setStroke()
             c.colour.setStroke()
             aPath.stroke()
         }
