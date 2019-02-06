@@ -10,17 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         let sView:strokeView = strokeView.init(frame: self.view.frame)
         sView.isUserInteractionEnabled = true
         self.view.addSubview(sView)
-        
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

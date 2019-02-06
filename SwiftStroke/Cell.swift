@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Cell: NSObject {
+final class Cell {
 
     var _x:Int = 0
     var _y:Int = 0
@@ -68,6 +68,11 @@ class Cell: NSObject {
         default:
              colour = .white
         }
+    }
+    
+    func setPos(x:Int,y:Int) {
+        _x = x
+        _y = y
     }
     
     func sense(x:Int,y:Int,px:Int,py:Int) {

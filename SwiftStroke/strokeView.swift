@@ -11,14 +11,13 @@ import UIKit
 class strokeView: UIView {
 
     var cells = [Cell]()
-    var numCells:Int = 5000
+    let numCells:Int = 5000
     var screenWidth:CGFloat = 0.0
     var screenHeight:CGFloat = 0.0
     var currentX:Int = 0
     var currentY:Int = 0
     var prevX:Int = 0
     var prevY:Int = 0
-    var displayLink:CADisplayLink = CADisplayLink()
     
     override init(frame: CGRect) {
         
@@ -40,7 +39,7 @@ class strokeView: UIView {
             cells.append(c)
         }
         
-        displayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
+        let displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
         displayLink.add(to: .main, forMode:.common)
         self.setNeedsDisplay()
     }
@@ -52,7 +51,16 @@ class strokeView: UIView {
     private func randomNumberBetween( _ start: Int, and: Int) -> Float {
         let diff:Float = Float(and) - Float(start)
         return Float((Float(arc4random() / UInt32(RAND_MAX)) * diff) + Float(start) )
-        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let currentPoint = touches.first?.location(in: touches.first?.view)
+        if let cp = currentPoint {
+            currentX = Int(cp.x)
+            currentY = Int(cp.y)
+            prevX = Int(cp.x)
+            prevY = Int(cp.y)
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -74,7 +82,6 @@ class strokeView: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-
         for c in cells {
             c.sense(x: currentX, y: currentY, px: prevX, py: prevY)
             let aPath = UIBezierPath()
